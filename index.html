@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillTree - Learning Path Generator</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Learning Path 🌳</h1>
+            <p>Enter a skill to generate your roadmap to mastery.</p>
+        </header>
+
+        <div class="input-section">
+            <input type="text" id="topicInput" placeholder="e.g. Python, Digital Marketing, Pottery...">
+            <button id="generateBtn" onclick="generatePath()">Generate Path</button>
+        </div>
+
+        <div id="loading" class="hidden">
+            <div class="spinner"></div>
+            <p>Constructing your curriculum...</p>
+        </div>
+
+        <div id="pathContainer" class="timeline">
+            </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

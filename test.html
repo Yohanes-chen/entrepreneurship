@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gemini Connection Tester</title>
+    <style>body { font-family: sans-serif; padding: 20px; }</style>
+</head>
+<body>
+    <h2>🔑 Gemini Key Tester</h2>
+    <input type="text" id="apiKey" placeholder="Paste your API Key here" style="width: 300px; padding: 10px;">
+    <button onclick="testConnection()">Test Connection</button>
+    <div id="results" style="margin-top: 20px;"></div>
+
+    <script>
+        async function testConnection() {
+            const key = document.getElementById('apiKey').value.trim();
+            const resultsDiv = document.getElementById('results');
+            if (!key) return alert("Enter key first");
+
+            resultsDiv.innerHTML = "Testing models...<br>";
+
+            // List of likely models to try
+            const models = [
+                "gemini-2.0-flash",
+                "gemini-1.5-flash",
+                "gemini-1.5-pro",
+                "gemini-pro"
+            ];
+
+            for (const model of models) {
+                resultsDiv.innerHTML += `Trying <b>${model}</b>... `;
+                
+                try {
+                    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`;
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({
+                            contents: [{ parts: [{ text: "Hello" }] }]
+                        })
+                    });
+
+                    if (response.ok) {
+                        resultsDiv.innerHTML += `✅ <span style="color:green; font-weight:bold;">SUCCESS!</span><br>`;
+                        alert(`Working model found: ${model}\n\nUpdate your script.js with this name!`);
+                        return; // Stop after finding one that works
+                    } else {
+                        resultsDiv.innerHTML += `❌ Failed (${response.status})<br>`;
+                    }
+                } catch (e) {
+                    resultsDiv.innerHTML += `❌ Error: ${e.message}<br>`;
+                }
+            }
+            resultsDiv.innerHTML += "<br><b>Diagnosis:</b> If all failed with 404, your API Key might be invalid or from the wrong provider (Vertex AI vs AI Studio).";
+        }
+    </script>
+</body>
+</html>
